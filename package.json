@@ -1,0 +1,16 @@
+{
+  "name": "11ty-plugin-lightbox",
+  "version": "0.0.1",
+  "description": "A lightbox plugin for 11ty. Provides a simply-style lightbox and a Nunjucks shortcode.",
+  "main": ".eleventy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/11ty/eleventy-plugin-rss.git"
+  },
+  "keywords": ["11ty", "eleventy", "lightbox"],
+  "author": "Deborah Barnard",
+  "license": "MIT"
+}
