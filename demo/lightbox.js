@@ -1,28 +1,29 @@
 module.exports = function(lightbox){
-    return(`<div class="sp-lightbox-container"><h2 style="text-align:center">${lightbox.title}</h2>
-    <div class="sp-lightbox-row">
-    ${lightbox.imgPath.map((path, index) => `<div class="sp-lightbox-column">
-    <img src="${path}" style="width:100%" onclick="openModal();currentSlide(${index + 1})" class="hover-shadow cursor">
-    </div>`).join('')}
-    </div>
-    <div id="myModal" class="modal">
-      <span class="close cursor" onclick="closeModal()">&times;</span>
-      <div class="modal-content">
-      ${lightbox.imgPath.map((path, index, array) => `<div class="mySlides"><div class="numbertext">${index + 1} / ${array.length} </div>
-      <img src="${path}" style="width:100%">
-      </div>`).join('')}
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>   
-        <div class="caption-container">
-          <p id="caption"></p>
-        </div>   
+    return(`
+    <div class="sp-lightbox-container">
+      <h2 style="text-align:center">${lightbox.title}</h2>
+      <div class="sp-lightbox-row">
         ${lightbox.imgPath.map((path, index) => `<div class="sp-lightbox-column">
-    <img class="demo cursor" src="${path}" style="width:100%" onclick="currentSlide(${index + 1})" alt="${lightbox.caption[index]}">
-    </div>`).join('')}
+        <img src="${path}" style="width:100%" onclick="openModal();currentSlide(${index + 1})" class="hover-shadow cursor"><div class="caption-container">
+        <p id="caption">${lightbox.caption[index]}</p>
       </div>
+        </div>`).join('')}
       </div>
+      <div id="myModal" class="modal">
+        <button class="sp-lightbox-close cursor" onclick="closeModal()">&times;</button>
+        <div class="modal-content">
+          ${lightbox.imgPath.map((path, index, array) => `<div class="mySlides"><div class="numbertext">${index + 1} / ${array.length} </div>            
+          <img src="${path}" style="max-width:100%; object-fit: cover;"><div class="caption-container">
+          <p id="caption">${lightbox.caption[index]}</p>
+        </div>
+          </div>`).join('')}
+          <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+          <button class="next" onclick="plusSlides(1)">&#10095;</button>   
+
+        </div>
       </div>
-      <script>
+    </div>
+<script>
  function openModal() {
    document.getElementById("myModal").style.display = "block";
  }
@@ -45,19 +46,12 @@ module.exports = function(lightbox){
  function showSlides(n) {
    var i;
    var slides = document.getElementsByClassName("mySlides");
-   var dots = document.getElementsByClassName("demo");
-   var captionText = document.getElementById("caption");
    if (n > slides.length) {slideIndex = 1}
    if (n < 1) {slideIndex = slides.length}
    for (i = 0; i < slides.length; i++) {
        slides[i].style.display = "none";
    }
-   for (i = 0; i < dots.length; i++) {
-       dots[i].className = dots[i].className.replace(" active", "");
-   }
    slides[slideIndex-1].style.display = "block";
-   dots[slideIndex-1].className += " active";
-   captionText.innerHTML = dots[slideIndex-1].alt;
  }
  </script>
  <style>
@@ -65,47 +59,42 @@ module.exports = function(lightbox){
    box-sizing: border-box;
    max-width: 100%;
 }
-.sp-lightbox-row > .sp-lightbox-column {
-   padding: 0 8px;
-}
 
-.sp-lightbox-row:after {
-   content: "";
-   display: table;
-   clear: both;
+.sp-lightbox-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .sp-lightbox-column {
-   float: left;
-   width: 25%;
+  margin: 0 0.5vw 2vw 0.5vw;
+  width: 18vw;
 }
-
 
 .modal {
    display: none;
    position: fixed;
    z-index: 1;
-   padding-top: 100px;
+   padding-top: 50px;
    left: 0;
    top: 0;
    width: 100%;
    height: 100%;
    overflow: auto;
-   background-color: black;
+   background-color: rgba(0,0,0,0.5);
 }
-
 
 .modal-content {
    position: relative;
-   background-color: #fefefe;
    margin: auto;
    padding: 0;
-   width: 90%;
-   max-width: 1200px;
+   max-width: 800px;
 }
-
-
- .close {
+ .sp-lightbox-close {
+   background-color: black;
+   border: none;
+   border-radius: 3px;
    color: white;
    position: absolute;
    top: 10px;
@@ -114,36 +103,38 @@ module.exports = function(lightbox){
    font-weight: bold;
 }
 
-.close:hover,
- .close:focus {
+.sp-lightbox-close:hover,
+ .sp-lightbox-close:focus {
    color: #999;
    text-decoration: none;
    cursor: pointer;
 }
 
- .mySlides {
-   display: none;
- }
-
-.cursor {
-   cursor: pointer;
+.mySlides {
+  display: none;
 }
 
+.cursor {
+  cursor: pointer;
+}
 .prev,
 .next {
-   cursor: pointer;
-   position: absolute;
-   top: 50%;
-   width: auto;
-   padding: 16px;
-   margin-top: -50px;
-   color: white;
-   font-weight: bold;
-   font-size: 20px;
-   transition: 0.6s ease;
-   border-radius: 0 3px 3px 0;
-   user-select: none;
-   -webkit-user-select: none;
+  background-color: black;
+  border:none;
+  border-radius: 0 3px 3px 0;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: -50px;
+  padding: 16px;
+  position: absolute;
+  top: 50%;
+  transition: 0.6s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+
  }
 
  .next {
@@ -157,15 +148,16 @@ module.exports = function(lightbox){
 }
 
 .numbertext {
-   color: #f2f2f2;
-   font-size: 12px;
-   padding: 8px 12px;
-   position: absolute;
-   top: 0;
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
 }
 
- img {
-   margin-bottom: -4px;
+img {
+  margin-bottom: -4px;
 }
 
 .caption-container {
