@@ -8,9 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/11ty/eleventy-plugin-rss.git"
+    "url": "git+https://github.com/StarfallProjects/11ty-plugin-lightbox.git"
   },
   "keywords": ["11ty", "eleventy", "lightbox"],
-  "author": "Deborah Barnard",
-  "license": "MIT"
+  "author": {
+    "name":"Deborah Barnard",
+    "url":"https://www.starfallprojects.co.uk/"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@11ty/eleventy": "^0.11.1"
+  },
+  "homepage": "https://github.com/StarfallProjects/11ty-plugin-lightbox"
 }

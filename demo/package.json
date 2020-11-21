@@ -1,0 +1,17 @@
+{
+  "name": "demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": ".eleventy.js",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "cross-env ELEVENTY_ENV=dev eleventy --serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.1",
+    "cross-env": "^7.0.2"
+  }
+}
