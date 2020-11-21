@@ -1,14 +1,14 @@
-module.exports = function(imgPath, caption){
-    return(`<h2 style="text-align:center">Lightbox</h2>
-    <div class="row">
-    ${imgPath.map(path => `<div class="column">
-    <img src="${path}" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
+module.exports = function(lightbox){
+    return(`<div class="sp-lightbox-container"><h2 style="text-align:center">${lightbox.title}</h2>
+    <div class="sp-lightbox-row">
+    ${lightbox.imgPath.map((path, index) => `<div class="sp-lightbox-column">
+    <img src="${path}" style="width:100%" onclick="openModal();currentSlide(${index + 1})" class="hover-shadow cursor">
     </div>`).join('')}
     </div>
     <div id="myModal" class="modal">
       <span class="close cursor" onclick="closeModal()">&times;</span>
       <div class="modal-content">
-      ${imgPath.map((path, index, array) => `<div class="mySlides"><div class="numbertext">${index + 1} / ${array.length} </div>
+      ${lightbox.imgPath.map((path, index, array) => `<div class="mySlides"><div class="numbertext">${index + 1} / ${array.length} </div>
       <img src="${path}" style="width:100%">
       </div>`).join('')}
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -16,9 +16,10 @@ module.exports = function(imgPath, caption){
         <div class="caption-container">
           <p id="caption"></p>
         </div>   
-        ${imgPath.map((path, index) => `<div class="column">
-    <img class="demo cursor" src="${path}" style="width:100%" onclick="currentSlide(${index + 1})" alt="${caption[index]}">
+        ${lightbox.imgPath.map((path, index) => `<div class="sp-lightbox-column">
+    <img class="demo cursor" src="${path}" style="width:100%" onclick="currentSlide(${index + 1})" alt="${lightbox.caption[index]}">
     </div>`).join('')}
+      </div>
       </div>
       </div>
       <script>
@@ -60,26 +61,21 @@ module.exports = function(imgPath, caption){
  }
  </script>
  <style>
- body {
-   font-family: Verdana, sans-serif;
-   margin: 0;
- }
-
-* {
+.sp-lightbox-container {
    box-sizing: border-box;
+   max-width: 100%;
 }
-
-.row > .column {
+.sp-lightbox-row > .sp-lightbox-column {
    padding: 0 8px;
 }
 
-.row:after {
+.sp-lightbox-row:after {
    content: "";
    display: table;
    clear: both;
 }
 
-.column {
+.sp-lightbox-column {
    float: left;
    width: 25%;
 }
@@ -150,19 +146,16 @@ module.exports = function(imgPath, caption){
    -webkit-user-select: none;
  }
 
- /* Position the "next button" to the right */
  .next {
    right: 0;
    border-radius: 3px 0 0 3px;
  }
 
- /* On hover, add a black background color with a little bit see-through */
  .prev:hover,
  .next:hover {
    background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* Number text (1/3 etc) */
 .numbertext {
    color: #f2f2f2;
    font-size: 12px;
@@ -198,11 +191,8 @@ module.exports = function(imgPath, caption){
  .hover-shadow:hover {
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
  }
- </style>
-      
-      `);
-
-
+ </style>    
+`);
 };
 
 

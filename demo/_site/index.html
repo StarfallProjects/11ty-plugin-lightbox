@@ -5,14 +5,14 @@
     </head>
     <body>
         <h1>11ty lightbox demo</h1>
-        <h2 style="text-align:center">Lightbox</h2>
-    <div class="row">
-    <div class="column">
+        <div class="sp-lightbox-container"><h2 style="text-align:center">Demo lightbox</h2>
+    <div class="sp-lightbox-row">
+    <div class="sp-lightbox-column">
     <img src="images/dax_1.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
-    </div><div class="column">
-    <img src="images/dax_2.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
-    </div><div class="column">
-    <img src="images/dax_3.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
+    </div><div class="sp-lightbox-column">
+    <img src="images/dax_2.jpg" style="width:100%" onclick="openModal();currentSlide(2)" class="hover-shadow cursor">
+    </div><div class="sp-lightbox-column">
+    <img src="images/dax_3.jpg" style="width:100%" onclick="openModal();currentSlide(3)" class="hover-shadow cursor">
     </div>
     </div>
     <div id="myModal" class="modal">
@@ -30,13 +30,14 @@
         <div class="caption-container">
           <p id="caption"></p>
         </div>   
-        <div class="column">
+        <div class="sp-lightbox-column">
     <img class="demo cursor" src="images/dax_1.jpg" style="width:100%" onclick="currentSlide(1)" alt="Dax one">
-    </div><div class="column">
+    </div><div class="sp-lightbox-column">
     <img class="demo cursor" src="images/dax_2.jpg" style="width:100%" onclick="currentSlide(2)" alt="Dax 2">
-    </div><div class="column">
+    </div><div class="sp-lightbox-column">
     <img class="demo cursor" src="images/dax_3.jpg" style="width:100%" onclick="currentSlide(3)" alt="Dax 3">
     </div>
+      </div>
       </div>
       </div>
       <script>
@@ -83,21 +84,24 @@
    margin: 0;
  }
 
-* {
+.sp-lightbox-container {
    box-sizing: border-box;
+   max-width: 100%;
 }
 
-.row > .column {
+
+
+.sp-lightbox-row > .sp-lightbox-column {
    padding: 0 8px;
 }
 
-.row:after {
+.sp-lightbox-row:after {
    content: "";
    display: table;
    clear: both;
 }
 
-.column {
+.sp-lightbox-column {
    float: left;
    width: 25%;
 }
