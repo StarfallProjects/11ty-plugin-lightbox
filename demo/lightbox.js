@@ -4,32 +4,35 @@ module.exports = function(lightbox){
       <h2 style="text-align:center">${lightbox.title}</h2>
       <div class="sp-lightbox-row">
         ${lightbox.imgPath.map((path, index) => `<div class="sp-lightbox-column">
-        <img src="${path}" style="width:100%" onclick="openModal();currentSlide(${index + 1})" class="hover-shadow cursor"><div class="caption-container">
+        <img class="sp-lightbox-thumbnail hover-shadow" src="${path}" onclick="openmodal();currentSlide(${index + 1})"><div class="caption-container">
         <p id="caption">${lightbox.caption[index]}</p>
       </div>
         </div>`).join('')}
       </div>
-      <div id="myModal" class="modal">
-        <button class="sp-lightbox-close cursor" onclick="closeModal()">&times;</button>
-        <div class="modal-content">
-          ${lightbox.imgPath.map((path, index, array) => `<div class="mySlides"><div class="numbertext">${index + 1} / ${array.length} </div>            
-          <img src="${path}" style="max-width:100%; object-fit: cover;"><div class="caption-container">
-          <p id="caption">${lightbox.caption[index]}</p>
-        </div>
+      <div id="my-sp-lightbox-modal" class="sp-lightbox-modal" onclick="closemodal()">
+        <button class="sp-lightbox-close" onclick="closemodal()">&times;</button>
+        <div class="sp-lightbox-modal-content">
+          ${lightbox.imgPath.map((path, index, array) => `<div class="sp-lightbox-slides"><span class="sp-lightbox-numbertext">${index + 1} / ${array.length} </span>            
+          <img class="sp-lightbox-slide-img" src="${path}">
+          <p class="caption-container">${lightbox.caption[index]}</p>
+        
           </div>`).join('')}
-          <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
-          <button class="next" onclick="plusSlides(1)">&#10095;</button>   
+          <button class="sp-lightbox-prev" onclick="plusSlides(-1)">&#10094;</button>
+          <button class="sp-lightbox-next" onclick="plusSlides(1)">&#10095;</button>   
 
         </div>
       </div>
     </div>
 <script>
- function openModal() {
-   document.getElementById("myModal").style.display = "block";
+ function openmodal() {
+   document.getElementById("my-sp-lightbox-modal").style.display = "block";
  }
 
- function closeModal() {
-   document.getElementById("myModal").style.display = "none";
+ function closemodal() {
+  event.stopPropagation(); 
+  if(event.target.className === "sp-lightbox-close" || event.target.className === "sp-lightbox-modal"){
+  document.getElementById("my-sp-lightbox-modal").style.display = "none";
+  }
  }
 
  var slideIndex = 1;
@@ -44,8 +47,8 @@ module.exports = function(lightbox){
  }
 
  function showSlides(n) {
-   var i;
-   var slides = document.getElementsByClassName("mySlides");
+   let i;
+   let slides = document.getElementsByClassName("sp-lightbox-slides");
    if (n > slides.length) {slideIndex = 1}
    if (n < 1) {slideIndex = slides.length}
    for (i = 0; i < slides.length; i++) {
@@ -55,8 +58,16 @@ module.exports = function(lightbox){
  }
  </script>
  <style>
+
+.sp-lightbox-thumbnail {
+  cursor: pointer;
+  margin-bottom: -4px;
+  max-height: 100%;
+  max-width: 100%;
+}
 .sp-lightbox-container {
    box-sizing: border-box;
+   height: 100%;
    max-width: 100%;
 }
 
@@ -72,20 +83,19 @@ module.exports = function(lightbox){
   width: 18vw;
 }
 
-.modal {
+.sp-lightbox-modal {
    display: none;
-   position: fixed;
+   position: absolute;
    z-index: 1;
    padding-top: 50px;
    left: 0;
    top: 0;
    width: 100%;
    height: 100%;
-   overflow: auto;
    background-color: rgba(0,0,0,0.5);
 }
 
-.modal-content {
+.sp-lightbox-modal-content {
    position: relative;
    margin: auto;
    padding: 0;
@@ -96,6 +106,7 @@ module.exports = function(lightbox){
    border: none;
    border-radius: 3px;
    color: white;
+   cursor: pointer;
    position: absolute;
    top: 10px;
    right: 25px;
@@ -110,15 +121,14 @@ module.exports = function(lightbox){
    cursor: pointer;
 }
 
-.mySlides {
+.sp-lightbox-slides {
+  background-color: black;
   display: none;
+  text-align: center;
 }
 
-.cursor {
-  cursor: pointer;
-}
-.prev,
-.next {
+.sp-lightbox-prev,
+.sp-lightbox-next {
   background-color: black;
   border:none;
   border-radius: 0 3px 3px 0;
@@ -137,27 +147,31 @@ module.exports = function(lightbox){
 
  }
 
- .next {
+ .sp-lightbox-next {
    right: 0;
    border-radius: 3px 0 0 3px;
  }
 
- .prev:hover,
- .next:hover {
+ .sp-lightbox-prev:hover,
+ .sp-lightbox-next:hover {
    background-color: rgba(0, 0, 0, 0.8);
 }
 
-.numbertext {
+.sp-lightbox-numbertext {
   background-color: black;
   color: white;
   font-size: 12px;
   padding: 8px 12px;
   position: absolute;
   top: 0;
+  left:0;
 }
 
-img {
+.sp-lightbox-slide-img {
   margin-bottom: -4px;
+  max-height: 600px;
+  max-width:100%; 
+  object-fit: cover;
 }
 
 .caption-container {
@@ -167,14 +181,7 @@ img {
    color: white;
  }
 
- .demo {
-   opacity: 0.6;
- }
 
- .active,
- .demo:hover {
-   opacity: 1;
- }
 
  img.hover-shadow {
    transition: 0.3s;
