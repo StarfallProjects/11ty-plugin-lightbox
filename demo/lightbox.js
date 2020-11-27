@@ -4,49 +4,52 @@ module.exports = function(lightbox){
       <h2 style="text-align:center">${lightbox.title}</h2>
       <div class="sp-lightbox-row">
         ${lightbox.imgPath.map((path, index) => `<div class="sp-lightbox-column">
-        <img class="sp-lightbox-thumbnail hover-shadow" src="${path}" onclick="openmodal();currentSlide(${index + 1})"><div class="caption-container">
-        <p id="caption">${lightbox.caption[index]}</p>
-      </div>
+        <img tabindex=0 class="sp-lightbox-thumbnail sp-lightbox-hover-shadow" src="${path}" onclick="openmodal();currentSlide(${index + 1})">
+        <div class="sp-lightbox-caption-container">${lightbox.caption[index]}</div>
         </div>`).join('')}
       </div>
-      <div id="my-sp-lightbox-modal" class="sp-lightbox-modal" onclick="closemodal()">
-        <button class="sp-lightbox-close" onclick="closemodal()">&times;</button>
+      <div id="my-sp-lightbox-modal" class="sp-lightbox-modal" onclick="closemodal()">        
         <div class="sp-lightbox-modal-content">
           ${lightbox.imgPath.map((path, index, array) => `<div class="sp-lightbox-slides"><span class="sp-lightbox-numbertext">${index + 1} / ${array.length} </span>            
           <img class="sp-lightbox-slide-img" src="${path}">
-          <p class="caption-container">${lightbox.caption[index]}</p>
-        
+          <p class="sp-lightbox-caption-container">${lightbox.caption[index]}</p>        
           </div>`).join('')}
-          <button class="sp-lightbox-prev" onclick="plusSlides(-1)">&#10094;</button>
-          <button class="sp-lightbox-next" onclick="plusSlides(1)">&#10095;</button>   
-
+          <button id="sp-lightbox-prev" onclick="plusSlides(-1)">&#10094;</button>
+          <button id="sp-lightbox-next" onclick="plusSlides(1)">&#10095;</button>
         </div>
+        <button class="sp-lightbox-close" onclick="closemodal()">&times;</button>
       </div>
     </div>
 <script>
- function openmodal() {
+let thumbnails = document.getElementsByClassName("sp-lightbox-thumbnail");
+console.log(thumbnails);
+for(let i=0; i<thumbnails.length;i++){
+  thumbnails[i].addEventListener("keypress", function(event) {
+    event.preventDefault();
+    if(event.keyCode === 13) {
+      event.target.click();
+      document.getElementById("sp-lightbox-next").focus();
+    }
+  });  
+}
+function openmodal() {
    document.getElementById("my-sp-lightbox-modal").style.display = "block";
  }
-
- function closemodal() {
+function closemodal() {
   event.stopPropagation(); 
   if(event.target.className === "sp-lightbox-close" || event.target.className === "sp-lightbox-modal"){
   document.getElementById("my-sp-lightbox-modal").style.display = "none";
   }
- }
-
- var slideIndex = 1;
- showSlides(slideIndex);
-
- function plusSlides(n) {
+}
+var slideIndex = 1;
+showSlides(slideIndex);
+function plusSlides(n) {
    showSlides(slideIndex += n);
- }
-
- function currentSlide(n) {
+}
+function currentSlide(n) {
    showSlides(slideIndex = n);
- }
-
- function showSlides(n) {
+}
+function showSlides(n) {
    let i;
    let slides = document.getElementsByClassName("sp-lightbox-slides");
    if (n > slides.length) {slideIndex = 1}
@@ -55,20 +58,84 @@ module.exports = function(lightbox){
        slides[i].style.display = "none";
    }
    slides[slideIndex-1].style.display = "block";
- }
- </script>
- <style>
+}
+</script>
+<style>
 
-.sp-lightbox-thumbnail {
+.sp-lightbox-caption-container {
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 15px 0;
+}
+
+.sp-lightbox-close {
+  background-color: black;
+  border: none;
+  border-radius: 3px;
+  color: white;
   cursor: pointer;
-  margin-bottom: -4px;
-  max-height: 100%;
-  max-width: 100%;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.sp-lightbox-close:hover,
+.sp-lightbox-close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sp-lightbox-column {
+  background-color: black;  
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  justify-content: space-evenly;
+  margin: 0 0.5vw 2vw 0.5vw;
+  width: 300px;
+  text-align: center;
 }
 .sp-lightbox-container {
    box-sizing: border-box;
    height: 100%;
    max-width: 100%;
+}
+
+.sp-lightbox-hover-shadow:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.sp-lightbox-modal {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,1);
+}
+
+.sp-lightbox-modal-content {
+  position: relative;
+  margin: auto;
+  padding: 0;
+  max-width: 800px;
+}
+
+.sp-lightbox-numbertext {
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+  left:0;
 }
 
 .sp-lightbox-row {
@@ -78,47 +145,11 @@ module.exports = function(lightbox){
   justify-content: space-between;
 }
 
-.sp-lightbox-column {
-  margin: 0 0.5vw 2vw 0.5vw;
-  width: 18vw;
-}
-
-.sp-lightbox-modal {
-   display: none;
-   position: absolute;
-   z-index: 1;
-   padding-top: 50px;
-   left: 0;
-   top: 0;
-   width: 100%;
-   height: 100%;
-   background-color: rgba(0,0,0,0.5);
-}
-
-.sp-lightbox-modal-content {
-   position: relative;
-   margin: auto;
-   padding: 0;
-   max-width: 800px;
-}
- .sp-lightbox-close {
-   background-color: black;
-   border: none;
-   border-radius: 3px;
-   color: white;
-   cursor: pointer;
-   position: absolute;
-   top: 10px;
-   right: 25px;
-   font-size: 35px;
-   font-weight: bold;
-}
-
-.sp-lightbox-close:hover,
- .sp-lightbox-close:focus {
-   color: #999;
-   text-decoration: none;
-   cursor: pointer;
+.sp-lightbox-slide-img {
+  margin-bottom: -4px;
+  max-height: 600px;
+  max-width:100%; 
+  object-fit: cover;
 }
 
 .sp-lightbox-slides {
@@ -127,8 +158,16 @@ module.exports = function(lightbox){
   text-align: center;
 }
 
-.sp-lightbox-prev,
-.sp-lightbox-next {
+.sp-lightbox-thumbnail {
+  cursor: pointer;
+  margin-bottom: -4px;
+  max-height: 85%;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+#sp-lightbox-prev,
+#sp-lightbox-next {
   background-color: black;
   border:none;
   border-radius: 0 3px 3px 0;
@@ -144,53 +183,18 @@ module.exports = function(lightbox){
   user-select: none;
   -webkit-user-select: none;
   width: auto;
-
  }
 
- .sp-lightbox-next {
+ #sp-lightbox-next {
    right: 0;
    border-radius: 3px 0 0 3px;
  }
 
- .sp-lightbox-prev:hover,
- .sp-lightbox-next:hover {
+ #sp-lightbox-prev:hover,
+ #sp-lightbox-next:hover {
    background-color: rgba(0, 0, 0, 0.8);
 }
-
-.sp-lightbox-numbertext {
-  background-color: black;
-  color: white;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-  left:0;
-}
-
-.sp-lightbox-slide-img {
-  margin-bottom: -4px;
-  max-height: 600px;
-  max-width:100%; 
-  object-fit: cover;
-}
-
-.caption-container {
-   text-align: center;
-   background-color: black;
-   padding: 2px 16px;
-   color: white;
- }
-
-
-
- img.hover-shadow {
-   transition: 0.3s;
- }
-
- .hover-shadow:hover {
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
- }
- </style>    
+</style>    
 `);
 };
 
