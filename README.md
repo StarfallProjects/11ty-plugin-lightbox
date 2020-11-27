@@ -8,4 +8,5 @@ TODO:
 
 * Make styling nicer
 * Make into an npm thingie (how even)
-* Make button styling consistent
+* Make styling customisable
+* WTD
